@@ -1,0 +1,269 @@
+<Configuration>
+	<ViewDefinitions>
+		<View>
+			<Name>brsh.iptServices</Name>
+			<ViewSelectedBy>
+				<TypeName>brsh.iptServices</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>Name</Label>
+						<Width>22</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Port</Label>
+						<Width>6</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Protocol</Label>
+						<Width>8</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>NickName</Label>
+						<Width>33</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Comment</Label>
+					</TableColumnHeader>
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>Name</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Port</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Protocol</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>NickName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Comment</PropertyName>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+		<View>
+			<Name>brsh.iptServicesSource</Name>
+			<ViewSelectedBy>
+				<TypeName>brsh.iptServicesSource</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>Source</Label>
+						<Width>8</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Name</Label>
+						<Width>22</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Port</Label>
+						<Width>6</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Protocol</Label>
+						<Width>8</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>NickName</Label>
+						<Width>33</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Comment</Label>
+					</TableColumnHeader>
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>Source</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Name</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Port</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Protocol</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>NickName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Comment</PropertyName>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+
+		<View>
+			<Name>brsh.iptPing</Name>
+			<ViewSelectedBy>
+				<TypeName>brsh.iptPing</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>ShortName</Label>
+						<Width>22</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>IP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Alive</Label>
+						<Width>6</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Host</Label>
+					</TableColumnHeader>
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>ShortName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>IP</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.Alive) {
+											$color = $Green
+										} else {
+											$color = $Red
+										}
+									}
+									"$Color{0}$Off" -f $_.Alive
+								</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Host</PropertyName>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+		<View>
+			<Name>brsh.iptPingPort</Name>
+			<ViewSelectedBy>
+				<TypeName>brsh.iptPingPort</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>ShortName</Label>
+						<Width>22</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>IP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Port</Label>
+						<Width>6</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>PortName</Label>
+						<Width>22</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>PortAlive</Label>
+						<Width>9</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Alive</Label>
+						<Width>9</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Host</Label>
+					</TableColumnHeader>
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>ShortName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>IP</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Port</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if (($null -eq $_.PortName) -or ($_.PortName.Trim().Length -eq 0)) {
+										'undefined'
+									} else {
+										$_.PortName
+									}
+								</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.PortAlive) {
+											$color = $Green
+										} else {
+											$color = $Red
+										}
+									}
+									"$Color{0}$Off" -f $_.PortAlive
+								</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.Alive) {
+											$color = $Green
+										} else {
+											$color = $Red
+										}
+									}
+									"$Color{0}$Off" -f $_.Alive
+								</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Host</PropertyName>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+
+
+	</ViewDefinitions>
+</Configuration>
