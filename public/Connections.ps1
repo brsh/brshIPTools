@@ -184,7 +184,14 @@ function Test-iptTCPPort {
                     Write-Verbose $_.Exception.Message
                 }
 
-                New-Object -TypeName PSCustomObject -Property @{ ComputerName = $Computer; Port = $i; Response = $Response }
+                $hash = @{
+                    PSTypeName   = 'brsh.iptTCPPing'
+                    ComputerName = $Computer
+                    Port         = $i
+                    Response     = $Response
+                }
+
+                New-Object -TypeName PSCustomObject -Property $hash
             }
         }
     }

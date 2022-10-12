@@ -264,6 +264,63 @@
 			</TableControl>
 		</View>
 
+		<View>
+			<Name>brsh.iptTCPPing</Name>
+			<ViewSelectedBy>
+				<TypeName>brsh.iptTCPPing</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>ComputerName</Label>
+						<Width>30</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Port</Label>
+						<Width>7</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Response</Label>
+						<Width>10</Width>
+					</TableColumnHeader>
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>ComputerName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Port</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;33m"
+										$Cyan = "$Escape[0;36m"
+										$Blue = "$Escape[0;34m"
+										$White = "$Escape[0;37m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = switch ($_.Response) {
+											'Open' { $Green }
+											'Refused' { $Yellow }
+											'TimeOut' { $Blue }
+											'Error' { $Red }
+											DEFAULT { $Cyan }
+										}
+									}
+									"$Color{0}$Off" -f $_.Response
+								</ScriptBlock>
+							</TableColumnItem>
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+
 
 	</ViewDefinitions>
 </Configuration>
