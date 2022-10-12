@@ -108,3 +108,86 @@ function Test-iptConnection {
         $Global:ProgressPreference = $OriginalProgressPreference
     }
 }
+
+
+function Test-iptTCPPort {
+    <#
+    .SYNOPSIS
+    Tests if the TCP port specified is alive
+    
+    .DESCRIPTION
+    Just a quick port tester. You specify the system(s) and the port(s) and it will
+    try to make a connection. If successful, you'll get true. 
+    
+    This is much more bare-bones than Test-iptConnection - there's no reverse DNS lookup,
+    no port-to-services lookup, no icmp ping.. just a straight TCP query. it's also quicker.
+    
+    .PARAMETER ComputerName
+    The name(s) of the system - can also be the IP Addresses
+    
+    .PARAMETER Port
+    The TCP port(s) to test (defaults to testing RDP and SSH - Win vs Linux kinda)
+    
+    .PARAMETER TimeOutMS
+    How many milliseconds to wait for a response.
+    
+    .EXAMPLE
+    Test-iptTCPPort -ComputerName MyServer -Port 22
+
+    .EXAMPLE
+    Test-iptTCPPort -ComputerName MyServer -Port 22, 3389
+
+    .EXAMPLE
+    'MyServer', '192.168.0.22' | Test-iptTCPPort -Port 3389, 22
+
+    .EXAMPLE
+    Get-ADComputer MyServer | Select-Object Name | Test-iptTCPPort -Port 3389, 22
+    #>
+    [CmdLetBinding()]
+    Param(
+        [Parameter(Mandatory = $true, ValueFromPipeline = $true, ValueFromPipelineByPropertyName = $true)]
+        [Alias('Name', 'MachineName')]
+        [string[]] $ComputerName, 
+        [ValidateRange(1, 65535)]
+        [int[]] $Port = @(3389, 22),
+        [int] $TimeOutMS = 3000
+    )
+
+    BEGIN {
+        [string] $Response = 'Unknown'
+    }
+
+    PROCESS {
+        foreach ($Computer in $ComputerName) {
+            foreach ($i in $Port) {
+                # Create TCP Client
+                $tcpClient = New-Object System.Net.Sockets.TcpClient
+                # Tell TCP Client to connect to machine on Port
+                $Response = Try {
+                    $iar = $tcpClient.BeginConnect($ComputerName, $i, $null, $null)
+
+                    # Set the wait time
+                    $wait = $iar.AsyncWaitHandle.WaitOne($TimeOutMS, $false)
+                    # Check to see if the connection is done
+                    if (-not $wait) {
+                        # Close the connection and report timeout
+                        [void] $tcpClient.Close()
+                        'TimeOut'
+                    } else {
+                        # Close the connection and report the error if there is one
+                        [void] $tcpClient.EndConnect($iar)
+                        [void] $tcpClient.Close()
+                        'Open'
+                    }
+                } Catch {
+                    if ($_.Exception.Message -match 'actively refused') { 'Refused' } else { 'Error' }
+                    Write-Verbose $_.Exception.Message
+                }
+
+                New-Object -TypeName PSCustomObject -Property @{ ComputerName = $Computer; Port = $i; Response = $Response }
+            }
+        }
+    }
+
+    END { }
+}
