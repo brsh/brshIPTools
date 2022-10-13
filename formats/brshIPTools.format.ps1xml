@@ -298,9 +298,9 @@
 									if ($Host.UI.SupportsVirtualTerminal) {
 										$Escape = "$([char]27)"
 										$Green = "$Escape[0;32m"
-										$Yellow = "$Escape[0;33m"
+										$Yellow = "$Escape[0;93m"
 										$Cyan = "$Escape[0;36m"
-										$Blue = "$Escape[0;34m"
+										$Blue = "$Escape[0;94m"
 										$White = "$Escape[0;37m"
 										$Red = "$Escape[0;91m"
 										$Off = "$Escape[0m"
