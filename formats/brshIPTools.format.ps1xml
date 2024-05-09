@@ -322,5 +322,1006 @@
 		</View>
 
 
+		<View>
+			<Name>brsh.iptHROver</Name>
+			<ViewSelectedBy>
+				<TypeName>brsh.iptHROver</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>SourceName</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>SourceIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Port</Label>
+						<Width>7</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Tests</Label>
+						<Width>6</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Fails</Label>
+						<Width>6</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>RunTimeMS</Label>
+						<Width>12</Width>
+						<Alignment>Right</Alignment>
+					</TableColumnHeader>
+
+					<TableColumnHeader>
+						<Label>MaxMS</Label>
+						<Width>12</Width>
+						<Alignment>Right</Alignment>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>AvgMS</Label>
+						<Width>12</Width>
+						<Alignment>Right</Alignment>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>MinMS</Label>
+						<Width>12</Width>
+						<Alignment>Right</Alignment>
+					</TableColumnHeader>
+
+
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>SourceName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>SourceIP</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>Port</PropertyName>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									"{0,5:N0}" -f $_.CountTests
+								</ScriptBlock>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.CountFails -eq 0) {
+											$color = $Green
+										} else {
+											$Percent = ($_.CountFails / $_.CountTests)*100
+											if ($Percent -le 50) {
+												$color = $yellow
+											} else {
+												$color = $Red
+											}
+										}
+									}
+									"$Color{0,5:N0}$Off" -f $_.CountFails
+								</ScriptBlock>
+							</TableColumnItem>
+
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.RunTimeMS -le 35000) {
+											$color = $Green
+										} elseif ($_.RunTimeMS -le 100000) {
+											$color = $yellow
+										} else {
+											$color = $Red
+										}
+									}
+									"$Color{0,12:N2}$Off" -f $_.RunTimeMS
+								</ScriptBlock>
+							</TableColumnItem>
+
+
+							<TableColumnItem>
+								<ScriptBlock>
+								$Measure = $_.Allresults | Measure-Object -Property TimeTakenMS -Maximum -Average -Minimum
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Orange = "$Escape[0;33m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Yellow
+										if ($Measure.Maximum -le 2000) {
+											$color = $Green
+										} elseif ($Measure.Maximum -le 8000) {
+											$color = $yellow
+										} else {
+											$color = $Orange
+										}
+									}
+									"$Color{0,12:N2}$Off" -f $Measure.Maximum
+								</ScriptBlock>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+								$Measure = $_.Allresults | Measure-Object -Property TimeTakenMS -Maximum -Average -Minimum
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Orange = "$Escape[0;33m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										$Percent = ($Measure.Average / $Measure.Maximum)*100
+										if ($Percent -le 40) {
+											$color = $Green
+										} elseif ($Percent -le 70) {
+											$color = $yellow
+										} else {
+											$color = $Red
+										}
+									}
+									"$Color{0,12:N2}$Off" -f $Measure.Average
+								</ScriptBlock>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+								$Measure = $_.Allresults | Measure-Object -Property TimeTakenMS -Maximum -Average -Minimum
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Orange = "$Escape[0;33m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+									}
+									"$Color{0,12:N2}$Off" -f $Measure.Minimum
+								</ScriptBlock>
+							</TableColumnItem>
+
+						</TableColumnItems>
+
+
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+
+
+
+		<View>
+			<Name>brsh.iptHRAll</Name>
+			<ViewSelectedBy>
+				<TypeName>brsh.iptHRAll</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>SourceName</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>SourceIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>DestinationName</Label>
+						<Width>40</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>DestinationIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Port</Label>
+						<Width>8</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Tests</Label>
+						<Width>6</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Fails</Label>
+						<Width>6</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>DNSLookupMS</Label>
+						<Width>12</Width>
+						<Alignment>Right</Alignment>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>TimeTakenMS</Label>
+						<Width>14</Width>
+						<Alignment>Right</Alignment>
+					</TableColumnHeader>
+
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>SourceName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>SourceIP</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Off
+										if ($_.DestinationName -eq 'NameResolutionFailed') {
+											$color = $Yellow
+										}
+									}
+									"$Color{0,5:N0}$Off" -f $_.DestinationName
+								</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Off
+										if ($_.DestinationName -eq 'NameResolutionFailed') {
+											$color = $Yellow
+										}
+									}
+									"$Color{0,5:N0}$Off" -f $_.DestinationIP
+								</ScriptBlock>
+							</TableColumnItem>
+							
+							<TableColumnItem>
+								<PropertyName>Port</PropertyName>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									"{0,5:N0}" -f $_.CountTests
+								</ScriptBlock>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.CountFails -eq 0) {
+											$color = $Green
+										} else {
+											$Percent = ($_.CountFails / $_.CountTests)*100
+											if ($Percent -le 50) {
+												$color = $yellow
+											} else {
+												$color = $Red
+											}
+										}
+									}
+									"$Color{0,5:N0}$Off" -f $_.CountFails
+								</ScriptBlock>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.DNSLookupMS -le 5) {
+											$color = $Green
+										} elseif ($_.DNSLookupMS -le 20) {
+											$color = $yellow
+										} else {
+											$color = $Red
+										}
+									}
+									"$Color{0,11:N2}$Off" -f $_.DNSLookupMS
+								</ScriptBlock>
+							</TableColumnItem>
+
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Orange = "$Escape[0;33m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.TimeTakenMS -le 100) {
+											$color = $Green
+										} elseif ($_.TimeTakenMS -le 2000) {
+											$color = $yellow
+										} elseif ($_.TimeTakenMS -le 5000) {
+											$colr = $Orange
+										} else {
+											$color = $Red
+										}
+									}
+									"$Color{0,11:N2}$Off" -f $_.TimeTakenMS
+								</ScriptBlock>
+							</TableColumnItem>
+
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+
+		<View>
+			<Name>brsh.iptHRAllnDNS</Name>
+			<ViewSelectedBy>
+				<TypeName>brsh.iptHRAllnDNS</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>SourceName</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>SourceIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>DestinationIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Port</Label>
+						<Width>8</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Tests</Label>
+						<Width>6</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Fails</Label>
+						<Width>6</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>DNSLookupMS</Label>
+						<Width>12</Width>
+						<Alignment>Right</Alignment>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>TimeTakenMS</Label>
+						<Width>14</Width>
+						<Alignment>Right</Alignment>
+					</TableColumnHeader>
+
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>SourceName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>SourceIP</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Off
+										if ($_.DestinationName -eq 'NameResolutionFailed') {
+											$color = $Yellow
+										}
+									}
+									"$Color{0,5:N0}$Off" -f $_.DestinationIP
+								</ScriptBlock>
+							</TableColumnItem>
+							
+							<TableColumnItem>
+								<PropertyName>Port</PropertyName>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									"{0,5:N0}" -f $_.CountTests
+								</ScriptBlock>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.CountFails -eq 0) {
+											$color = $Green
+										} else {
+											$Percent = ($_.CountFails / $_.CountTests)*100
+											if ($Percent -le 50) {
+												$color = $yellow
+											} else {
+												$color = $Red
+											}
+										}
+									}
+									"$Color{0,5:N0}$Off" -f $_.CountFails
+								</ScriptBlock>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.DNSLookupMS -le 5) {
+											$color = $Green
+										} elseif ($_.DNSLookupMS -le 20) {
+											$color = $yellow
+										} else {
+											$color = $Red
+										}
+									}
+									"$Color{0,11:N2}$Off" -f $_.DNSLookupMS
+								</ScriptBlock>
+							</TableColumnItem>
+
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Orange = "$Escape[0;33m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.TimeTakenMS -le 100) {
+											$color = $Green
+										} elseif ($_.TimeTakenMS -le 2000) {
+											$color = $yellow
+										} elseif ($_.TimeTakenMS -le 5000) {
+											$colr = $Orange
+										} else {
+											$color = $Red
+										}
+									}
+									"$Color{0,11:N2}$Off" -f $_.TimeTakenMS
+								</ScriptBlock>
+							</TableColumnItem>
+
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+
+
+		<View>
+			<Name>brsh.iptHREachTCP</Name>
+			<ViewSelectedBy>
+				<TypeName>brsh.iptHREachTCP</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>SourceName</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>SourceIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>DestinationName</Label>
+						<Width>40</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>DestinationIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Port</Label>
+						<Width>8</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>RoundTripTime</Label>
+						<Width>14</Width>
+						<Alignment>Right</Alignment>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Response</Label>
+					</TableColumnHeader>
+
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>SourceName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>SourceIP</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Off
+										if ($_.DestinationName -eq 'NameResolutionFailed') {
+											$color = $Yellow
+										}
+									}
+									"$Color{0,5:N0}$Off" -f $_.DestinationName
+								</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Off
+										if ($_.DestinationName -eq 'NameResolutionFailed') {
+											$color = $Yellow
+										}
+									}
+									"$Color{0,5:N0}$Off" -f $_.DestinationIP
+								</ScriptBlock>
+							</TableColumnItem>
+							
+							<TableColumnItem>
+								<PropertyName>Port</PropertyName>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Orange = "$Escape[0;33m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Orange
+										if ($_.RoundtripTime -le 500) {
+											$color = $Green
+										} elseif ($_.RoundtripTime -le 2000) {
+											$color = $yellow
+										} elseif ($_.RoundtripTime -le 5000) {
+											$colr = $Orange
+										} else {
+											$color = $Red
+										}
+									}
+									"$color{0:N2}$Off" -f $_.RoundtripTime
+								</ScriptBlock>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.Response -match '(Success|Open)') {
+											$color = $Green
+										} elseif ($_.Response -match '(Error|Unknown|Unreachable)') {
+												$color = $Red
+										} else {
+												$color = $Yellow
+										}
+									}
+									"$Color{0}$Off" -f $_.Response
+								</ScriptBlock>
+							</TableColumnItem>
+
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+
+		<View>
+			<Name>brsh.iptHREachTCPnDNS</Name>
+			<ViewSelectedBy>
+				<TypeName>brsh.iptHREachTCPnDNS</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>SourceName</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>SourceIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>DestinationIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Port</Label>
+						<Width>8</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>RoundTripTime</Label>
+						<Width>14</Width>
+						<Alignment>Right</Alignment>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Response</Label>
+					</TableColumnHeader>
+
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>SourceName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>SourceIP</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Off
+										if ($_.DestinationName -eq 'NameResolutionFailed') {
+											$color = $Yellow
+										}
+									}
+									"$Color{0,5:N0}$Off" -f $_.DestinationIP
+								</ScriptBlock>
+							</TableColumnItem>
+							
+							<TableColumnItem>
+								<PropertyName>Port</PropertyName>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Orange = "$Escape[0;33m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Orange
+										if ($_.RoundtripTime -le 500) {
+											$color = $Green
+										} elseif ($_.RoundtripTime -le 2000) {
+											$color = $yellow
+										} elseif ($_.RoundtripTime -le 5000) {
+											$colr = $Orange
+										} else {
+											$color = $Red
+										}
+									}
+									"$color{0:N2}$Off" -f $_.RoundtripTime
+								</ScriptBlock>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.Response -match '(Success|Open)') {
+											$color = $Green
+										} elseif ($_.Response -match '(Error|Unknown|Unreachable)') {
+												$color = $Red
+										} else {
+												$color = $Yellow
+										}
+									}
+									"$Color{0}$Off" -f $_.Response
+								</ScriptBlock>
+							</TableColumnItem>
+
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+
+
+		<View>
+			<Name>brsh.iptHREachPing</Name>
+			<ViewSelectedBy>
+				<TypeName>brsh.iptHREachPing</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>SourceName</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>SourceIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>DestinationName</Label>
+						<Width>40</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>DestinationIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>RoundTripTime</Label>
+						<Width>14</Width>
+						<Alignment>Right</Alignment>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Response</Label>
+					</TableColumnHeader>
+
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>SourceName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>SourceIP</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Off
+										if ($_.DestinationName -eq 'NameResolutionFailed') {
+											$color = $Yellow
+										}
+									}
+									"$Color{0,5:N0}$Off" -f $_.DestinationName
+								</ScriptBlock>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Off
+										if ($_.DestinationName -eq 'NameResolutionFailed') {
+											$color = $Yellow
+										}
+									}
+									"$Color{0,5:N0}$Off" -f $_.DestinationIP
+								</ScriptBlock>
+							</TableColumnItem>
+							
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Orange = "$Escape[0;33m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Orange
+										if ($_.RoundtripTime -le 500) {
+											$color = $Green
+										} elseif ($_.RoundtripTime -le 2000) {
+											$color = $yellow
+										} elseif ($_.RoundtripTime -le 5000) {
+											$colr = $Orange
+										} else {
+											$color = $Red
+										}
+									}
+									"$color{0:N2}$Off" -f $_.RoundtripTime
+								</ScriptBlock>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.Response -match '(Success|Open)') {
+											$color = $Green
+										} elseif ($_.Response -match '(Error|Unknown|Unreachable)') {
+												$color = $Red
+										} else {
+												$color = $Yellow
+										}
+									}
+									"$Color{0}$Off" -f $_.Response
+								</ScriptBlock>
+							</TableColumnItem>
+
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
+
+		<View>
+			<Name>brsh.iptHREachPingnDNS</Name>
+			<ViewSelectedBy>
+				<TypeName>brsh.iptHREachPingnDNS</TypeName>
+			</ViewSelectedBy>
+			<TableControl>
+				<TableHeaders>
+					<TableColumnHeader>
+						<Label>SourceName</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>SourceIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>DestinationIP</Label>
+						<Width>16</Width>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>RoundTripTime</Label>
+						<Width>14</Width>
+						<Alignment>Right</Alignment>
+					</TableColumnHeader>
+					<TableColumnHeader>
+						<Label>Response</Label>
+					</TableColumnHeader>
+
+				</TableHeaders>
+				<TableRowEntries>
+					<TableRowEntry>
+						<TableColumnItems>
+							<TableColumnItem>
+								<PropertyName>SourceName</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<PropertyName>SourceIP</PropertyName>
+							</TableColumnItem>
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Off
+										if ($_.DestinationName -eq 'NameResolutionFailed') {
+											$color = $Yellow
+										}
+									}
+									"$Color{0,5:N0}$Off" -f $_.DestinationIP
+								</ScriptBlock>
+							</TableColumnItem>
+							
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Orange = "$Escape[0;33m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Orange
+										if ($_.RoundtripTime -le 500) {
+											$color = $Green
+										} elseif ($_.RoundtripTime -le 2000) {
+											$color = $yellow
+										} elseif ($_.RoundtripTime -le 5000) {
+											$colr = $Orange
+										} else {
+											$color = $Red
+										}
+									}
+									"$color{0:N2}$Off" -f $_.RoundtripTime
+								</ScriptBlock>
+							</TableColumnItem>
+
+							<TableColumnItem>
+								<ScriptBlock>
+									if ($Host.UI.SupportsVirtualTerminal) {
+										$Escape = "$([char]27)"
+										$Green = "$Escape[0;32m"
+										$Yellow = "$Escape[0;93m"
+										$Red = "$Escape[0;91m"
+										$Off = "$Escape[0m"
+										$color = $Green
+										if ($_.Response -match '(Success|Open)') {
+											$color = $Green
+										} elseif ($_.Response -match '(Error|Unknown|Unreachable)') {
+												$color = $Red
+										} else {
+												$color = $Yellow
+										}
+									}
+									"$Color{0}$Off" -f $_.Response
+								</ScriptBlock>
+							</TableColumnItem>
+
+						</TableColumnItems>
+					</TableRowEntry>
+				</TableRowEntries>
+			</TableControl>
+		</View>
 	</ViewDefinitions>
 </Configuration>
