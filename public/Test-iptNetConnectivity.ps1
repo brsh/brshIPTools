@@ -27,7 +27,7 @@ A little more complexly, it will test TCP ports across that list.
     ----------       --------         ----   -----  -----     ---------        -----        -----        -----
     MyServer01       192.168.1.61     3389      40      8     16,872.33    10,013.22     1,680.77         1.89
 
-It's strength comes once you use the -EnableRemoteTests switch, at which point it will ask the list of 
+Its strength comes once you use the -EnableRemoteTests switch, at which point it will ask the list of 
 systems to perform those tests.
 
     "Hey 25 systems, please ping these 25 systems 20 times, I'll wait."
@@ -71,14 +71,14 @@ broader summary, showing general results of each source to each destination.
     ...
 
 And the AllResults property has an EachResult property that includes each test run. That could be a lot of result; 
-just warning you. I during development, I had 100 source (and destination) servers with 100 tests. That's 
+just warning you. During development, I had 100 source (and destination) servers with 100 tests. That's 
 1,000,000 pings. Took almost 20 minutes cuz of the timeouts. I do _not_ change the throttle limit on Invoke-Command, 
 so that's 32 sets of source systems at a time.
 
     SourceName       SourceIP         DestinationName                          DestinationIP     RoundTripTime Response
     ----------       --------         ---------------                          -------------     ------------- --------
-    PIT-REPORTDB-01  192.168.1.25     Myserver02.dnsresult.com                 192.168.1.26               9.00 Success
-    PIT-REPORTDB-01  192.168.1.25     Myserver02.dnsresult.com                 192.168.1.26               9.00 Success
+    Myserver01       192.168.1.25     Myserver02.dnsresult.com                 192.168.1.26               9.00 Success
+    Myserver01       192.168.1.25     Myserver02.dnsresult.com                 192.168.1.26               9.00 Success
     ...
 
 Please note: I do some DNS tests - name and address lookups _before_ any other processing. Part of that is to send 
